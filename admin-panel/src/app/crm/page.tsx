@@ -10,6 +10,7 @@ export default function CRMPage() {
   const [customers, setCustomers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [kycFilter, setKycFilter] = useState<'all' | 'verified' | 'pending'>('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newClient, setNewClient] = useState({
     name: '',
@@ -51,11 +52,19 @@ export default function CRMPage() {
     }
   }
 
-  const filteredCustomers = customers.filter(c => 
-    c.name?.toLowerCase().includes(search.toLowerCase()) ||
-    c.phone?.includes(search) ||
-    c.email?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredCustomers = customers.filter(c => {
+    const matchesSearch = c.name?.toLowerCase().includes(search.toLowerCase()) ||
+      c.phone?.includes(search) ||
+      c.email?.toLowerCase().includes(search.toLowerCase())
+    
+    const matchesKyc = kycFilter === 'all' 
+      ? true 
+      : kycFilter === 'verified' 
+      ? c.kycStatus === 'verified' 
+      : c.kycStatus === 'pending'
+      
+    return matchesSearch && matchesKyc
+  })
 
   return (
     <AdminLayout>
@@ -74,9 +83,9 @@ export default function CRMPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <StatCard title="Total Clients" value={customers.length} icon={<Users className="text-blue-600" />} color="bg-blue-50" />
-        <StatCard title="Verified KYC" value={customers.filter(c => c.kycStatus === 'verified').length} icon={<CheckCircle className="text-green-600" />} color="bg-green-50" />
-        <StatCard title="Pending KYC" value={customers.filter(c => c.kycStatus === 'pending').length} icon={<Clock className="text-amber-600" />} color="bg-amber-50" />
+        <StatCard title="Total Clients" value={customers.length} icon={<Users className="text-blue-600" />} color="bg-blue-50" onClick={() => { setKycFilter('all'); setSearch(''); }} active={kycFilter === 'all'} />
+        <StatCard title="Verified KYC" value={customers.filter(c => c.kycStatus === 'verified').length} icon={<CheckCircle className="text-green-600" />} color="bg-green-50" onClick={() => setKycFilter('verified')} active={kycFilter === 'verified'} />
+        <StatCard title="Pending KYC" value={customers.filter(c => c.kycStatus === 'pending').length} icon={<Clock className="text-amber-600" />} color="bg-amber-50" onClick={() => setKycFilter('pending')} active={kycFilter === 'pending'} />
       </div>
 
       <div className="mt-8 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
@@ -197,9 +206,14 @@ export default function CRMPage() {
   )
 }
 
-function StatCard({ title, value, icon, color }: any) {
+function StatCard({ title, value, icon, color, onClick, active }: any) {
   return (
-    <div className={`p-6 rounded-2xl border border-gray-100 shadow-sm ${color}`}>
+    <div 
+      onClick={onClick}
+      className={`p-6 rounded-2xl border transition-all select-none ${color} ${
+        onClick ? 'cursor-pointer hover:shadow-md hover:border-gray-200 hover:scale-[1.01] active:scale-[0.99]' : ''
+      } ${active ? 'ring-2 ring-blue-500 shadow-md border-blue-200' : 'border-gray-100 shadow-sm'}`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>

@@ -8,6 +8,7 @@ import {
   MapPin, Phone, UserCheck, RefreshCw, Calendar, X
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 // ─── Revenue & Activity Data ────────────────────────────────────────────────
 const REVENUE_DATA = [185000, 220000, 175000, 310000, 265000, 390000, 285000]
@@ -219,16 +220,23 @@ function FloatingFAB() {
 }
 
 // ─── Stat Card ───────────────────────────────────────────────────────────────
-function StatCard({ label, value, icon: Icon, color, bg }: any) {
-  return (
-    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-100 transition-all duration-300 group">
-      <div className={`w-14 h-14 ${bg} ${color} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-        <Icon size={28} />
+function StatCard({ label, value, icon: Icon, color, bg, href }: any) {
+  const cardContent = (
+    <div className={`bg-white p-5 md:p-8 rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm transition-all duration-300 group ${href ? 'cursor-pointer hover:shadow-lg hover:shadow-gray-100/50 hover:border-gray-200 hover:scale-[1.01] active:scale-[0.99]' : ''}`}>
+      <div className="flex md:flex-col md:items-start justify-between items-center gap-4 mb-3 md:mb-5">
+        <div className={`w-8 h-8 md:w-14 md:h-14 ${bg} ${color} rounded-lg md:rounded-2xl flex items-center justify-center shrink-0 md:order-first group-hover:scale-110 transition-transform duration-300`}>
+          <Icon className="w-4 h-4 md:w-7 md:h-7" />
+        </div>
+        <p className="text-[10px] md:text-sm font-bold text-gray-400 uppercase tracking-wider md:tracking-widest md:mt-4 truncate">{label}</p>
       </div>
-      <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1.5">{label}</p>
-      <p className="text-4xl font-black text-gray-900">{value || 0}</p>
+      <p className="text-2xl md:text-4xl font-black text-gray-900 leading-none">{value || 0}</p>
     </div>
   )
+
+  if (href) {
+    return <Link href={href} className="block select-none">{cardContent}</Link>
+  }
+  return cardContent
 }
 
 // ─── Pipeline Bar ─────────────────────────────────────────────────────────────
@@ -339,8 +347,21 @@ export default function DashboardPage() {
 
   useEffect(() => { load() }, [startDate, endDate])
 
-  const downloadReport = () => {
-    const params = new URLSearchParams({ type: 'summary', from: startDate, to: endDate })
+  const downloadReport = async () => {
+    let token = ''
+    const isMock = typeof window !== 'undefined' ? localStorage.getItem('movish_mock_session') === 'true' : false
+    if (isMock) {
+      token = 'mock-token-super-admin'
+    } else {
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        const { data } = await supabase.auth.getSession()
+        token = data.session?.access_token || ''
+      } catch (err) {
+        console.error('Supabase session load error:', err)
+      }
+    }
+    const params = new URLSearchParams({ type: 'summary', from: startDate, to: endDate, token })
     window.open(`/api/v1/reports?${params}`, '_blank')
   }
 
@@ -417,12 +438,14 @@ export default function DashboardPage() {
 
           {/* ── KPI Cards ── */}
           {loading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="bg-white rounded-3xl border border-gray-100 p-8 animate-pulse shadow-sm">
-                  <div className="w-14 h-14 bg-gray-50 rounded-2xl mb-4" />
-                  <div className="h-4 bg-gray-50 rounded-lg w-2/3 mb-3" />
-                  <div className="h-10 bg-gray-50 rounded-xl w-1/2" />
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl border border-gray-100 p-5 animate-pulse shadow-sm">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="h-3 bg-gray-100 rounded w-1/2" />
+                    <div className="w-8 h-8 bg-gray-50 rounded-lg" />
+                  </div>
+                  <div className="h-6 bg-gray-100 rounded w-1/3" />
                 </div>
               ))}
             </div>
@@ -436,23 +459,23 @@ export default function DashboardPage() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* Agent View */}
               {stats.view === 'agent' && (
-                <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
-                  <StatCard label="Leads Assigned" value={stats.my_leads} icon={Target} color="text-blue-600" bg="bg-blue-50" />
-                  <StatCard label="Fresh Today" value={stats.new_leads_today} icon={Plus} color="text-green-600" bg="bg-green-50" />
-                  <StatCard label="Pending Tasks" value={stats.pending_followups} icon={Clock} color="text-amber-600" bg="bg-amber-50" />
-                  <StatCard label="Call Activity" value={stats.calls_today} icon={Phone} color="text-purple-600" bg="bg-purple-50" />
-                  <StatCard label="My Quotes" value={stats.my_quotations} icon={FileText} color="text-indigo-600" bg="bg-indigo-50" />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <StatCard label="Leads Assigned" value={stats.my_leads} icon={Target} color="text-blue-600" bg="bg-blue-50" href="/leads" />
+                  <StatCard label="Fresh Today" value={stats.new_leads_today} icon={Plus} color="text-green-600" bg="bg-green-50" href="/leads" />
+                  <StatCard label="Pending Tasks" value={stats.pending_followups} icon={Clock} color="text-amber-600" bg="bg-amber-50" href="/follow-ups" />
+                  <StatCard label="Call Activity" value={stats.calls_today} icon={Phone} color="text-purple-600" bg="bg-purple-50" href="/follow-ups" />
+                  <StatCard label="My Quotes" value={stats.my_quotations} icon={FileText} color="text-indigo-600" bg="bg-indigo-50" href="/quotations" />
                 </div>
               )}
 
               {/* Manager View */}
               {stats.view === 'manager' && (
                 <>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    <StatCard label="Team Leads" value={stats.total_leads} icon={Users2} color="text-blue-600" bg="bg-blue-50" />
-                    <StatCard label="Conversions" value={stats.won_leads} icon={UserCheck} color="text-green-600" bg="bg-green-50" />
-                    <StatCard label="Open Followups" value={stats.pending_followups} icon={Clock} color="text-amber-600" bg="bg-amber-50" />
-                    <StatCard label="Overdue Items" value={stats.overdue_followups} icon={AlertCircle} color="text-red-600" bg="bg-red-50" />
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <StatCard label="Team Leads" value={stats.total_leads} icon={Users2} color="text-blue-600" bg="bg-blue-50" href="/leads" />
+                    <StatCard label="Conversions" value={stats.won_leads} icon={UserCheck} color="text-green-600" bg="bg-green-50" href="/leads" />
+                    <StatCard label="Open Followups" value={stats.pending_followups} icon={Clock} color="text-amber-600" bg="bg-amber-50" href="/follow-ups" />
+                    <StatCard label="Overdue Items" value={stats.overdue_followups} icon={AlertCircle} color="text-red-600" bg="bg-red-50" href="/follow-ups" />
                   </div>
                   {stats.pipeline?.length > 0 && <PipelineBar pipeline={stats.pipeline} />}
                   {team.length > 0 && <TeamList team={team} />}
@@ -461,18 +484,14 @@ export default function DashboardPage() {
 
               {/* Admin View */}
               {stats.view === 'admin' && (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Leads Pipeline" value={stats.total_leads} icon={Target} color="text-[#084D8C]" bg="bg-blue-50" />
-                    <StatCard label="New Arrivals" value={stats.new_leads_today} icon={Plus} color="text-green-600" bg="bg-green-50" />
-                    <StatCard label="Total Staff" value={stats.total_employees} icon={Users2} color="text-violet-600" bg="bg-violet-50" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Workshop Tickets" value={stats.active_claims} icon={Briefcase} color="text-[#D8232A]" bg="bg-red-50" />
-                    <StatCard label="Finance Approvals" value={stats.active_loans} icon={BarChart2} color="text-cyan-600" bg="bg-cyan-50" />
-                    <StatCard label="Site Visits" value={stats.today_visits} icon={MapPin} color="text-teal-600" bg="bg-teal-50" />
-                  </div>
-                </>
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+                  <StatCard label="Leads Pipeline" value={stats.total_leads} icon={Target} color="text-[#084D8C]" bg="bg-blue-50" href="/leads" />
+                  <StatCard label="New Arrivals" value={stats.new_leads_today} icon={Plus} color="text-green-600" bg="bg-green-50" href="/leads" />
+                  <StatCard label="Total Staff" value={stats.total_employees} icon={Users2} color="text-violet-600" bg="bg-violet-50" href="/hr" />
+                  <StatCard label="Workshop Tickets" value={stats.active_claims} icon={Briefcase} color="text-[#D8232A]" bg="bg-red-50" href="/services" />
+                  <StatCard label="Finance Approvals" value={stats.active_loans} icon={BarChart2} color="text-cyan-600" bg="bg-cyan-50" href="/loans" />
+                  <StatCard label="Site Visits" value={stats.today_visits} icon={MapPin} color="text-teal-600" bg="bg-teal-50" href="/follow-ups" />
+                </div>
               )}
 
               {/* ── Revenue Chart + Activity Feed ── */}

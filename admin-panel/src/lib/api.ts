@@ -4,6 +4,36 @@ import { supabase } from './supabase'
 const INITIAL_MOCK_DB = {
   leads: [
     {
+      id: "lead-gj15ax3940",
+      clientName: "Sanand Nagarpalika (Mr. Dave)",
+      clientPhone: "9974023456",
+      clientEmail: "admin@sanandnagarpalika.org",
+      vehicleNo: "Ashok Leyland Dost (Reg: GJ15AX3940)",
+      status: "Won",
+      createdAt: "2026-06-12T10:00:00.000Z",
+      assignee: { fullName: "Ganpat Ladva" }
+    },
+    {
+      id: "lead-4535",
+      clientName: "Mayur Bhai",
+      clientPhone: "9724992981",
+      clientEmail: "mayur.bhai@mandal.com",
+      vehicleNo: "Ashok Leyland Bada Dost (Reg: GJ38TA5028)",
+      status: "Qualified",
+      createdAt: "2026-06-09T09:52:00.000Z",
+      assignee: { fullName: "Danish" }
+    },
+    {
+      id: "lead-gj01lt4513",
+      clientName: "Jigar Transport And Company",
+      clientPhone: "9904877465",
+      clientEmail: "info@jigartransport.com",
+      vehicleNo: "L0891700TCSCC_WHT (Reg: GJ01LT4513)",
+      status: "Won",
+      createdAt: "2026-06-11T10:00:00.000Z",
+      assignee: { fullName: "Shaikh Jaanmohammad" }
+    },
+    {
       id: "lead-1",
       clientName: "Ahmedabad Logistics Pvt Ltd (Mr. Patel)",
       clientPhone: "9898012345",
@@ -55,6 +85,36 @@ const INITIAL_MOCK_DB = {
     }
   ],
   crm: [
+    {
+      id: "client-gj15ax3940",
+      name: "Sanand Nagarpalika",
+      phone: "9974023456",
+      email: "admin@sanandnagarpalika.org",
+      address: "Nagarpalika Office, Sanand, Gujarat, India",
+      kycStatus: "verified",
+      policyCount: 0,
+      leadId: "lead-gj15ax3940"
+    },
+    {
+      id: "client-4535",
+      name: "Mayur Bhai",
+      phone: "9724992981",
+      email: "mayur.bhai@mandal.com",
+      address: "Mandal, Gujarat, India",
+      kycStatus: "pending",
+      policyCount: 0,
+      leadId: "lead-4535"
+    },
+    {
+      id: "client-gj01lt4513",
+      name: "Jigar Transport And Company",
+      phone: "9904877465",
+      email: "info@jigartransport.com",
+      address: "380054 AHMEDABAD-AHMEDABAD, INDIA",
+      kycStatus: "verified",
+      policyCount: 0,
+      leadId: "lead-gj01lt4513"
+    },
     {
       id: "client-1",
       name: "Ahmedabad Logistics Pvt Ltd (Mr. Patel)",
@@ -226,9 +286,604 @@ const INITIAL_MOCK_DB = {
     { "id": "resp-2", "text": "Your commercial vehicle loan application has been submitted to HDFC Bank. Track status on your Movish portal.", "isActive": true }
   ],
   users: [
-    { "id": "user-1", "fullName": "Rajesh Sharma", "email": "rajesh@movish.com", "role": { "name": "Manager" }, "isActive": true },
-    { "id": "user-2", "fullName": "Amit Patel", "email": "amit@movish.com", "role": { "name": "Executive" }, "isActive": true }
-  ],
+      {
+        "id": "user-admin",
+        "fullName": "Movish Administrator",
+        "email": "admin@movish.com",
+        "role": {
+          "name": "Admin"
+        },
+        "isActive": true
+      },
+      {
+        "id": "emp-user-1",
+        "fullName": "YUVRAJSINH CHANDRASINH ZALA",
+        "email": "yuvrajsinh.zala@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-11-10"
+      },
+      {
+        "id": "emp-user-2",
+        "fullName": "JAVID MAHAMADHANIF SHEKH",
+        "email": "javid.mahamadhanif@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2021-04-03"
+      },
+      {
+        "id": "emp-user-3",
+        "fullName": "MD ABULARAF MD HASIB",
+        "email": "abularaf.hasib@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-07-17"
+      },
+      {
+        "id": "emp-user-4",
+        "fullName": "IMRANKHAN MAHEMUDKHAN PATHAN",
+        "email": "imrankhan.pathan@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2023-11-11"
+      },
+      {
+        "id": "emp-user-5",
+        "fullName": "YUNUS ISMAILBHAI MIRZA",
+        "email": "yunus.mirza@movish.com",
+        "role": {
+          "name": "Field Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-11-29"
+      },
+      {
+        "id": "emp-user-6",
+        "fullName": "MO.ARSHAD AKHTAR ANSARI",
+        "email": "moarshad.ansari@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-11-10"
+      },
+      {
+        "id": "emp-user-7",
+        "fullName": "SOHIL SALIMBHAI SHAIKH",
+        "email": "sohil.salimbhai@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-05-12"
+      },
+      {
+        "id": "emp-user-8",
+        "fullName": "MD UMARFARUK MD SHAMIMAKHTAR",
+        "email": "umarfaruk.shamimakhtar@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-05-10"
+      },
+      {
+        "id": "emp-user-9",
+        "fullName": "MOHD AYAAN JABIRHUSEN",
+        "email": "mohd.jabirhusen@movish.com",
+        "role": {
+          "name": "CRM Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-08-01"
+      },
+      {
+        "id": "emp-user-10",
+        "fullName": "MD DAUD MD HABIB",
+        "email": "daud.habib@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-10-26"
+      },
+      {
+        "id": "emp-user-11",
+        "fullName": "DHARMESH SURESHBHAI LIMBACHIYA",
+        "email": "dharmesh.limbachiya@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2021-01-25"
+      },
+      {
+        "id": "emp-user-12",
+        "fullName": "SAKIBHUSEN SABIRHUSEN SHEKH",
+        "email": "sakibhusen.sabirhusen@movish.com",
+        "role": {
+          "name": "CRM Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-08-18"
+      },
+      {
+        "id": "emp-user-13",
+        "fullName": "MD.JUMMANKHAN MD.HARUNRASHID",
+        "email": "mdjummankhan.mdharunrashid@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-11-23"
+      },
+      {
+        "id": "emp-user-14",
+        "fullName": "IQBALHUSEN AHEMADHUSEN MOMIN",
+        "email": "iqbalhusen.momin@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2023-07-05"
+      },
+      {
+        "id": "emp-user-15",
+        "fullName": "ROKENDRA SINGH SAWAI SINGH",
+        "email": "rokendra.singh@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2022-10-02"
+      },
+      {
+        "id": "emp-user-16",
+        "fullName": "MOHAMMAD SAMEER MOHAMMAD ATEEK",
+        "email": "mohammad.ateek@movish.com",
+        "role": {
+          "name": "Field Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-07-07"
+      },
+      {
+        "id": "emp-user-17",
+        "fullName": "ASPAK FIROJKHAN PATHAN",
+        "email": "aspak.pathan@movish.com",
+        "role": {
+          "name": "Field Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-05-27"
+      },
+      {
+        "id": "emp-user-18",
+        "fullName": "JAANMOHAMMAD RIYAZAHEMAD SHAIKH",
+        "email": "jaanmohammad.riyazahemad@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-10-10"
+      },
+      {
+        "id": "emp-user-19",
+        "fullName": "IMRAN KHALILAMED SHAIKH",
+        "email": "imran.khalilamed@movish.com",
+        "role": {
+          "name": "Manager"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2020-03-15"
+      },
+      {
+        "id": "emp-user-20",
+        "fullName": "YOGESHKUMAR BABUBHAI PAGI",
+        "email": "yogeshkumar.pagi@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-03-08"
+      },
+      {
+        "id": "emp-user-21",
+        "fullName": "MOHAMMADMONIS MO.RAFIK",
+        "email": "mohammadmonis.morafik@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-05-22"
+      },
+      {
+        "id": "emp-user-22",
+        "fullName": "MO AFJAL KURBANALI",
+        "email": "afjal.kurbanali@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2026-01-23"
+      },
+      {
+        "id": "emp-user-23",
+        "fullName": "MO.SAMEER MO.ANEESH MANSURI",
+        "email": "mosameer.mansuri@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-02-21"
+      },
+      {
+        "id": "emp-user-24",
+        "fullName": "MOHD ZAFAR MOHMMAD ANEES MANSURI",
+        "email": "mohd.mansuri@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2023-10-13"
+      },
+      {
+        "id": "emp-user-25",
+        "fullName": "MO.RASHID MO.ISARAIL MANSURI",
+        "email": "morashid.mansuri@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-02-21"
+      },
+      {
+        "id": "emp-user-26",
+        "fullName": "IMRAN MUSTUFABHAI SALAR",
+        "email": "imran.salar@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-09-18"
+      },
+      {
+        "id": "emp-user-27",
+        "fullName": "MO.GUFRAN MO,IRFAN MANSURI",
+        "email": "mogufran.mansuri@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-07-04"
+      },
+      {
+        "id": "emp-user-28",
+        "fullName": "MOHD ASAD VALIULLAH",
+        "email": "mohd.valiullah@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-12-29"
+      },
+      {
+        "id": "emp-user-29",
+        "fullName": "MOOHAMMADAVEZ MOHAMMADIQBAL PATHAN",
+        "email": "moohammadavez.pathan@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2025-05-06"
+      },
+      {
+        "id": "emp-user-30",
+        "fullName": "RAUFALAMHAJI ABDULHASAN SHAIKH",
+        "email": "raufalamhaji.abdulhasan@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-07-10"
+      },
+      {
+        "id": "emp-user-31",
+        "fullName": "BHAUMIL BALDEVBHAI JAWARAJIYA",
+        "email": "bhaumil.jawarajiya@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 12000,
+        "joiningDate": "2020-05-15"
+      },
+      {
+        "id": "emp-user-32",
+        "fullName": "YASHKUMAR SATISHKUMAR DAVE",
+        "email": "yashkumar.dave@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 12000,
+        "joiningDate": "2020-05-15"
+      },
+      {
+        "id": "emp-user-33",
+        "fullName": "SAHEJAD MOHAMMAD AMEN MANIYAR",
+        "email": "sahejad.maniyar@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 12000,
+        "joiningDate": "2023-07-25"
+      },
+      {
+        "id": "emp-user-34",
+        "fullName": "KRISH ASHOKBHAI BHIL",
+        "email": "krish.bhil@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 12000,
+        "joiningDate": "2025-02-11"
+      },
+      {
+        "id": "emp-user-35",
+        "fullName": "MD HUMMAD MOHAMMAD SIRAJ",
+        "email": "hummad.siraj@movish.com",
+        "role": {
+          "name": "Claims Executive"
+        },
+        "isActive": true,
+        "branch": "KALOL",
+        "salary": 12000,
+        "joiningDate": "2022-12-24"
+      },
+      {
+        "id": "emp-user-36",
+        "fullName": "MO.TUFEL AJMATALI MANSURI",
+        "email": "motufel.mansuri@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 18360,
+        "joiningDate": "2024-07-30"
+      },
+      {
+        "id": "emp-user-37",
+        "fullName": "HARDIK NARSINGBHAI GORIYA",
+        "email": "hardik.goriya@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 12000,
+        "joiningDate": "2022-01-01"
+      },
+      {
+        "id": "emp-user-38",
+        "fullName": "MD SAHAGIR MD ISMAIL SHAH",
+        "email": "sahagir.shah@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2026-07-11"
+      },
+      {
+        "id": "emp-user-39",
+        "fullName": "SALAUDIN MUNIR AHMED",
+        "email": "salaudin.ahmed@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 17000,
+        "joiningDate": "2025-07-21"
+      },
+      {
+        "id": "emp-user-40",
+        "fullName": "FURKAN",
+        "email": "furkan@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 17000,
+        "joiningDate": "2025-07-21"
+      },
+      {
+        "id": "emp-user-41",
+        "fullName": "GANPAT KANJIBHAI LADVA",
+        "email": "ganpat.ladva@movish.com",
+        "role": {
+          "name": "CRM Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 14000,
+        "joiningDate": "2026-03-27"
+      },
+      {
+        "id": "emp-user-42",
+        "fullName": "SHEKH MUSTAKIM SALIMBHAI",
+        "email": "mustakim.salimbhai@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2026-04-15"
+      },
+      {
+        "id": "emp-user-43",
+        "fullName": "SAIYAD JAIDALI SAJIDHUSEN",
+        "email": "jaidali.sajidhusen@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 10000,
+        "joiningDate": "2026-04-13"
+      },
+      {
+        "id": "emp-user-44",
+        "fullName": "AYANKHAN NAFISULLAHKHAN PATHAN",
+        "email": "ayankhan.pathan@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 15000,
+        "joiningDate": "2024-08-21"
+      },
+      {
+        "id": "emp-user-45",
+        "fullName": "RASHAD MOHAMMAD AMEN MANIYAR",
+        "email": "rashad.maniyar@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "NAROL",
+        "salary": 10000,
+        "joiningDate": "2025-02-17"
+      },
+      {
+        "id": "emp-user-46",
+        "fullName": "PATAN MO.FAIZAN MO.ARIFALI",
+        "email": "patan.moarifali@movish.com",
+        "role": {
+          "name": "Viewer"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 10000,
+        "joiningDate": "2026-04-21"
+      },
+      {
+        "id": "emp-user-47",
+        "fullName": "NADIM MO.KALIM MANSURI",
+        "email": "nadim.mansuri@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2024-01-09"
+      },
+      {
+        "id": "emp-user-48",
+        "fullName": "MOHAMMAD VAIS MOHAMMAD AVESH",
+        "email": "mohammad.avesh@movish.com",
+        "role": {
+          "name": "Sales Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 12000,
+        "joiningDate": "2026-05-01"
+      },
+      {
+        "id": "emp-user-49",
+        "fullName": "SHAIKH MO.DANIS ABIDBHAI",
+        "email": "modanis.abidbhai@movish.com",
+        "role": {
+          "name": "CRM Executive"
+        },
+        "isActive": true,
+        "branch": "SHANTIPURA",
+        "salary": 15000,
+        "joiningDate": "2026-05-25"
+      }
+    ],
   roles: [
     { "id": "role-1", "name": "Admin", "description": "System Administrator — full access to all modules", "permissions": [], "_count": { "users": 1 } },
     { "id": "role-2", "name": "Sales Manager", "description": "Manages sales team, leads pipeline and quotations", "permissions": [], "_count": { "users": 2 } },
@@ -297,6 +952,17 @@ const INITIAL_MOCK_DB = {
   },
   transactions: [
     {
+      "id": "tx-gj01lt4513",
+      "type": "income",
+      "category": "Service Fee",
+      "amount": 650.04,
+      "status": "completed",
+      "paymentMethod": "Cash",
+      "referenceNumber": "INV7770260001485",
+      "description": "LCV Minor Service charge (R&R ScanTool) - GJ01LT4513",
+      "date": "2026-06-11"
+    },
+    {
       "id": "tx-1",
       "type": "income",
       "category": "Vehicle Sale",
@@ -345,6 +1011,305 @@ const INITIAL_MOCK_DB = {
     { "id": "part-12", "name": "Brake Lining Set (Rear)", "price": 2800, "unit": "Set" }
   ],
   workshopJobCards: [
+    {
+      "id": "JC-GJ15AX3940",
+      "customerName": "Sanand Nagarpalika",
+      "vehicleModel": "Ashok Leyland Dost (Municipal Tipper)",
+      "vehicleNumber": "GJ15AX3940",
+      "chassisNumber": "MBL42F8C9G100445",
+      "odometerReading": 42500,
+      "driverComplaints": "Municipal garbage body service & routine checkup. General inspection required.",
+      "warrantyStatus": "Out of Warranty",
+      "amcStatus": "Corporate Fleet Contract",
+      "stage": 8,
+      "status": "in-progress",
+      "createdAt": "2026-06-12T10:00:00.000Z",
+      "documents": {
+        "jobCardCreated": true,
+        "estimateApproved": true,
+        "gateEntryCreated": true
+      },
+      "generalInspection": {
+        "engineCondition": true,
+        "oilLeakage": false,
+        "coolantLevel": true,
+        "batteryCondition": true,
+        "tyreWear": true,
+        "brakeCondition": true,
+        "suspensionCheck": true
+      },
+      "driverComplaintsDiagnosis": {
+        "lowPickup": false,
+        "excessSmoke": false,
+        "brakeHard": false,
+        "clutchSlipping": false,
+        "steeringVibration": false
+      },
+      "serviceSchedule": {
+        "interval": "40,000 km",
+        "category": "Paid Service"
+      },
+      "operationsPerformed": {
+        "engineOilReplaced": true,
+        "oilFilterReplaced": true,
+        "fuelFilterServiced": true,
+        "airFilterServiced": true,
+        "beltTensionChecked": true,
+        "gearOilChecked": true,
+        "clutchAdjusted": true,
+        "brakeLiningInspected": true,
+        "airLeakageTested": true,
+        "brakeChamberInspected": true,
+        "batteryVoltageTested": true,
+        "alternatorChecked": true,
+        "lightingInspected": true,
+        "greasePointsLubricated": true,
+        "uBoltTightened": true,
+        "leafSpringInspected": true,
+        "radiatorCleaned": true,
+        "coolantToppedUp": true
+      },
+      "washingGreasing": {
+        "pressureWash": true,
+        "chassisGreasing": true,
+        "propellerShaftGreasing": true,
+        "kingpinLubrication": true
+      },
+      "partsIssued": [
+        { "id": "part-1", "name": "Engine Oil (15W-40 CI4 Plus)", "quantity": 6, "price": 450 },
+        { "id": "part-2", "name": "Oil Filter Element", "quantity": 1, "price": 850 },
+        { "id": "part-3", "name": "Fuel Filter (Primary)", "quantity": 1, "price": 1200 },
+        { "id": "part-8", "name": "Chassis Grease (Lithium Base)", "quantity": 2, "price": 380 }
+      ],
+      "technicians": {
+        "mechanic": "Amit Patel",
+        "electrician": "Manoj Dev",
+        "washingCrew": "Washing Team A",
+        "roadTestDriver": "Amit Patel",
+        "laborHours": 4.5,
+        "laborCost": 1800
+      },
+      "qualityCheck": {
+        "torqueChecks": true,
+        "leakageInspection": true,
+        "testDrive": true,
+        "brakeTest": true,
+        "smokeCheck": true,
+        "signedOffBy": "Ganpat Ladva"
+      },
+      "billing": {
+        "partsTotal": 5400,
+        "laborTotal": 1800,
+        "gstAmount": 1300,
+        "totalAmount": 8500,
+        "invoiceNumber": "INV7770260001490",
+        "isWarrantyClaim": false
+      },
+      "delivery": {
+        "workExplained": true,
+        "nextServiceDueOdo": 47500,
+        "customerSignature": "Mr. Dave",
+        "feedbackRating": 5,
+        "feedbackComments": "Excellent servicing of the municipal tipper garbage truck. Very prompt.",
+        "deliveredAt": "2026-06-12T18:45:00.000Z"
+      }
+    },
+    {
+      "id": "JC-4535",
+      "customerName": "Mayur Bhai",
+      "vehicleModel": "Ashok Leyland Bada Dost",
+      "vehicleNumber": "GJ38TA5028",
+      "chassisNumber": "CHJ38TA5028",
+      "odometerReading": 63176,
+      "driverComplaints": "Regeneration Light check",
+      "warrantyStatus": "Under Warranty",
+      "amcStatus": "No AMC",
+      "stage": 2,
+      "status": "in-progress",
+      "createdAt": "2026-06-09T09:52:00.000Z",
+      "documents": {
+        "jobCardCreated": true,
+        "estimateApproved": false,
+        "gateEntryCreated": true
+      },
+      "generalInspection": {
+        "engineCondition": false,
+        "oilLeakage": false,
+        "coolantLevel": false,
+        "batteryCondition": false,
+        "tyreWear": false,
+        "brakeCondition": false,
+        "suspensionCheck": false
+      },
+      "driverComplaintsDiagnosis": {
+        "lowPickup": false,
+        "excessSmoke": false,
+        "brakeHard": false,
+        "clutchSlipping": false,
+        "steeringVibration": false
+      },
+      "serviceSchedule": {
+        "interval": "60,000 km",
+        "category": "Paid Service"
+      },
+      "operationsPerformed": {
+        "engineOilReplaced": false,
+        "oilFilterReplaced": false,
+        "fuelFilterServiced": false,
+        "airFilterServiced": false,
+        "beltTensionChecked": false,
+        "gearOilChecked": false,
+        "clutchAdjusted": false,
+        "brakeLiningInspected": false,
+        "airLeakageTested": false,
+        "brakeChamberInspected": false,
+        "batteryVoltageTested": false,
+        "alternatorChecked": false,
+        "lightingInspected": false,
+        "greasePointsLubricated": false,
+        "uBoltTightened": false,
+        "leafSpringInspected": false,
+        "radiatorCleaned": false,
+        "coolantToppedUp": false
+      },
+      "washingGreasing": {
+        "pressureWash": false,
+        "chassisGreasing": false,
+        "propellerShaftGreasing": false,
+        "kingpinLubrication": false
+      },
+      "partsIssued": [],
+      "technicians": {
+        "mechanic": "Amit Patel",
+        "electrician": "Manoj Dev",
+        "washingCrew": "",
+        "roadTestDriver": "",
+        "laborHours": 0,
+        "laborCost": 0
+      },
+      "qualityCheck": {
+        "torqueChecks": false,
+        "leakageInspection": false,
+        "testDrive": false,
+        "brakeTest": false,
+        "smokeCheck": false,
+        "signedOffBy": ""
+      },
+      "billing": {
+        "partsTotal": 0,
+        "laborTotal": 0,
+        "gstAmount": 0,
+        "totalAmount": 0,
+        "invoiceNumber": "",
+        "isWarrantyClaim": false
+      },
+      "delivery": {
+        "workExplained": false,
+        "nextServiceDueOdo": 68176,
+        "customerSignature": "",
+        "feedbackRating": 0,
+        "feedbackComments": "",
+        "deliveredAt": ""
+      }
+    },
+    {
+      "id": "LJC77702627001448",
+      "customerName": "Jigar Transport And Company",
+      "vehicleModel": "L0891700TCSCC_WHT",
+      "vehicleNumber": "GJ01LT4513",
+      "chassisNumber": "MB1AA22E9RRGZ4388",
+      "odometerReading": 26234,
+      "driverComplaints": "LCV Minor Service - R&R ScanTool Charge",
+      "warrantyStatus": "Out of Warranty",
+      "amcStatus": "No AMC",
+      "stage": 10,
+      "status": "completed",
+      "createdAt": "2026-06-11T10:00:00.000Z",
+      "documents": {
+        "jobCardCreated": true,
+        "estimateApproved": true,
+        "gateEntryCreated": true
+      },
+      "generalInspection": {
+        "engineCondition": true,
+        "oilLeakage": false,
+        "coolantLevel": true,
+        "batteryCondition": true,
+        "tyreWear": true,
+        "brakeCondition": true,
+        "suspensionCheck": true
+      },
+      "driverComplaintsDiagnosis": {
+        "lowPickup": false,
+        "excessSmoke": false,
+        "brakeHard": false,
+        "clutchSlipping": false,
+        "steeringVibration": false
+      },
+      "serviceSchedule": {
+        "interval": "LCV Minor Service",
+        "category": "Minor Service"
+      },
+      "operationsPerformed": {
+        "engineOilReplaced": true,
+        "oilFilterReplaced": true,
+        "fuelFilterServiced": false,
+        "airFilterServiced": false,
+        "beltTensionChecked": false,
+        "gearOilChecked": false,
+        "clutchAdjusted": false,
+        "brakeLiningInspected": false,
+        "airLeakageTested": false,
+        "brakeChamberInspected": false,
+        "batteryVoltageTested": false,
+        "alternatorChecked": false,
+        "lightingInspected": false,
+        "greasePointsLubricated": false,
+        "uBoltTightened": false,
+        "leafSpringInspected": false,
+        "radiatorCleaned": false,
+        "coolantToppedUp": false
+      },
+      "washingGreasing": {
+        "pressureWash": true,
+        "chassisGreasing": true,
+        "propellerShaftGreasing": false,
+        "kingpinLubrication": false
+      },
+      "partsIssued": [],
+      "technicians": {
+        "mechanic": "Shaikh Jaanmohammad",
+        "electrician": "",
+        "washingCrew": "Washing Team A",
+        "roadTestDriver": "Shaikh Jaanmohammad",
+        "laborHours": 1.25,
+        "laborCost": 550.88
+      },
+      "qualityCheck": {
+        "torqueChecks": true,
+        "leakageInspection": true,
+        "testDrive": true,
+        "brakeTest": true,
+        "smokeCheck": true,
+        "signedOffBy": "Shaikh Jaanmohammad"
+      },
+      "billing": {
+        "partsTotal": 0,
+        "laborTotal": 550.88,
+        "gstAmount": 99.16,
+        "totalAmount": 650.04,
+        "invoiceNumber": "INV7770260001485",
+        "isWarrantyClaim": false
+      },
+      "delivery": {
+        "workExplained": true,
+        "nextServiceDueOdo": 31234,
+        "customerSignature": "Jigar Transport And Company",
+        "feedbackRating": 5,
+        "feedbackComments": "LCV Minor Service and Scan Tool check done properly.",
+        "deliveredAt": "2026-06-11T17:28:00.000Z"
+      }
+    },
     {
       "id": "JC-2026-0001",
       "customerName": "Ahmedabad Logistics Pvt Ltd",
@@ -650,7 +1615,7 @@ const INITIAL_MOCK_DB = {
   ]
 };
 
-const MOCK_DB_VERSION = 'v3'; // Increment this to force reset local mock database when schema changes
+const MOCK_DB_VERSION = 'v7'; // Increment this to force reset local mock database when schema changes
 
 // Retrieve or Initialize Local Storage Mock Database
 function getMockDb(): typeof INITIAL_MOCK_DB {
@@ -700,6 +1665,15 @@ export async function fetchApi(path: string, options: RequestInit = {}, retries 
     }
 
     // INTERCEPT ROUTER
+    if (pathname.startsWith('/api/v1/sap/sync')) {
+      const simulatedDocEntry = Math.floor(100000 + Math.random() * 900000);
+      return {
+        success: true,
+        docEntry: simulatedDocEntry,
+        message: `Successfully synchronized to SAP ERP Ledger (Simulated Document Entry: ${simulatedDocEntry}).`
+      };
+    }
+
     if (pathname.startsWith('/api/v1/dashboard/stats')) {
       const pendingClaims = db.claims.filter(c => c.status === 'pending').length;
       const activeLoans = db.loans.filter(l => ['Applied', 'Processing', 'Approved'].includes(l.conversionStatus)).length;

@@ -19,13 +19,19 @@ export async function validateAuth(
   requiredPermission?: string
 ): Promise<{ context?: AuthContext; error?: NextResponse }> {
   try {
+    let token = ''
     const authHeader = req.headers.get('Authorization')
-    if (!authHeader) {
-      console.error('[auth-guard] Missing Authorization header');
-      return { error: NextResponse.json({ error: 'Missing authorization token' }, { status: 401 }) }
+    if (authHeader) {
+      token = authHeader.split(' ')[1]
+    } else {
+      const { searchParams } = new URL(req.url)
+      token = searchParams.get('token') || ''
     }
 
-    const token = authHeader.split(' ')[1]
+    if (!token) {
+      console.error('[auth-guard] Missing Authorization header or query token');
+      return { error: NextResponse.json({ error: 'Missing authorization token' }, { status: 401 }) }
+    }
 
     // Bypass authentication for local demo mock-session
     if (token === 'mock-token-super-admin') {

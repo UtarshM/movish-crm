@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 
 // Hardcoded for production builds — env vars are NOT available inside APKs
-const supabaseUrl = 'https://pcopqancvickxrbzgttz.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjb3BxYW5jdmlja3hyYnpndHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNzYxMjcsImV4cCI6MjA5NDk1MjEyN30.GK-p8iHEU0bhPNsQ3pFApa9aMUyxwDp_VLwTqpQuCCU';
+const supabaseUrl = 'https://jngyjpxhrhzngtbonnkb.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuZ3lqcHhocmh6bmd0Ym9ubmtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NDI4NTMsImV4cCI6MjA5OTMxODg1M30.i6FCT_An6iqYDU6livPgkSx55EOtwPK6gMoRbo-fECI';
 
 const isWeb = Platform.OS === 'web';
 const storage = isWeb ? (typeof window !== 'undefined' ? window.localStorage : undefined) : AsyncStorage;

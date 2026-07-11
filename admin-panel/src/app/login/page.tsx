@@ -20,8 +20,7 @@ export default function LoginPage() {
       if (email === 'admin@movish.com') {
         localStorage.setItem('movish_mock_session', 'true')
         localStorage.setItem('movish_mock_email', email)
-        router.push('/')
-        router.refresh()
+        window.location.href = '/'
         return
       }
 

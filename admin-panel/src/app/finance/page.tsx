@@ -8,6 +8,7 @@ export default function FinancePage() {
   const [data, setData] = useState<any>({ items: [], summary: {} })
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [txTypeFilter, setTxTypeFilter] = useState<'all' | 'income' | 'expense'>('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newTransaction, setNewTransaction] = useState({
     type: 'expense',
@@ -63,11 +64,17 @@ export default function FinancePage() {
   const expense = data.summary?.expense || 0
   const balance = income - expense
 
-  const filteredTransactions = (data.items || []).filter((t: any) => 
-    t.category?.toLowerCase().includes(search.toLowerCase()) ||
-    t.description?.toLowerCase().includes(search.toLowerCase()) ||
-    t.referenceNumber?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredTransactions = (data.items || []).filter((t: any) => {
+    const matchesSearch = t.category?.toLowerCase().includes(search.toLowerCase()) ||
+      t.description?.toLowerCase().includes(search.toLowerCase()) ||
+      t.referenceNumber?.toLowerCase().includes(search.toLowerCase())
+      
+    const matchesType = txTypeFilter === 'all' 
+      ? true 
+      : t.type === txTypeFilter
+      
+    return matchesSearch && matchesType
+  })
 
   return (
     <AdminLayout>
@@ -87,9 +94,9 @@ export default function FinancePage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <StatCard title="Total Balance" value={`₹${balance.toLocaleString()}`} icon={<Wallet size={24} />} color="bg-white" textColor="text-gray-900" iconColor="bg-blue-50 text-blue-600" />
-        <StatCard title="Monthly Income" value={`+₹${income.toLocaleString()}`} icon={<ArrowUpCircle size={24} />} color="bg-white" textColor="text-green-600" iconColor="bg-green-50 text-green-600" />
-        <StatCard title="Monthly Expenses" value={`-₹${expense.toLocaleString()}`} icon={<ArrowDownCircle size={24} />} color="bg-white" textColor="text-red-600" iconColor="bg-red-50 text-red-600" />
+        <StatCard title="Total Balance" value={`₹${balance.toLocaleString()}`} icon={<Wallet size={24} />} color="bg-white" textColor="text-gray-900" iconColor="bg-blue-50 text-blue-600" onClick={() => { setTxTypeFilter('all'); setSearch(''); }} active={txTypeFilter === 'all'} />
+        <StatCard title="Monthly Income" value={`+₹${income.toLocaleString()}`} icon={<ArrowUpCircle size={24} />} color="bg-white" textColor="text-green-600" iconColor="bg-green-50 text-green-600" onClick={() => setTxTypeFilter('income')} active={txTypeFilter === 'income'} />
+        <StatCard title="Monthly Expenses" value={`-₹${expense.toLocaleString()}`} icon={<ArrowDownCircle size={24} />} color="bg-white" textColor="text-red-600" iconColor="bg-red-50 text-red-600" onClick={() => setTxTypeFilter('expense')} active={txTypeFilter === 'expense'} />
       </div>
 
       {/* Transactions Table */}
@@ -243,9 +250,14 @@ export default function FinancePage() {
   )
 }
 
-function StatCard({ title, value, icon, color, textColor, iconColor }: any) {
+function StatCard({ title, value, icon, color, textColor, iconColor, onClick, active }: any) {
   return (
-    <div className={`${color} p-6 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md`}>
+    <div 
+      onClick={onClick}
+      className={`${color} p-6 rounded-2xl border transition-all select-none ${
+        onClick ? 'cursor-pointer hover:shadow-md hover:border-gray-200 hover:scale-[1.01] active:scale-[0.99]' : ''
+      } ${active ? 'ring-2 ring-blue-500 shadow-md border-blue-200' : 'border-gray-100 shadow-sm'}`}
+    >
       <div className={`w-12 h-12 ${iconColor} rounded-xl flex items-center justify-center mb-4 shadow-sm`}>
         {icon}
       </div>

@@ -7,7 +7,7 @@ import {
   RefreshCw, Phone, MessageCircle, X, ArrowRight, User, Car, MapPin, Mail,
   Clock, TrendingUp, FileText, CheckSquare, Star, ChevronRight, Zap, Target
 } from 'lucide-react'
-
+import { useRouter } from 'next/navigation'
 const STATUS_COLORS: Record<string, string> = {
   New: 'bg-blue-100 text-blue-700',
   Qualified: 'bg-cyan-100 text-cyan-700',
@@ -27,6 +27,7 @@ const LEAD_TIMELINE: Record<string, any[]> = {
 }
 
 export default function LeadsPage() {
+  const router = useRouter()
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
   const initialSearch = searchParams?.get('search') || ''
 
@@ -138,10 +139,10 @@ export default function LeadsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-        <StatCard title="Total Leads" value={stats?.total || 0} icon={<Users className="text-[#084D8C]" size={22}/>} color="bg-blue-50" />
-        <StatCard title="Assigned" value={stats?.assigned || 0} icon={<CheckCircle className="text-green-600" size={22}/>} color="bg-green-50" />
-        <StatCard title="Converted" value={stats?.converted || 0} icon={<Target className="text-purple-600" size={22}/>} color="bg-purple-50" />
-        <StatCard title="Followups" value={stats?.followups || 0} icon={<AlertCircle className="text-amber-600" size={22}/>} color="bg-amber-50" />
+        <StatCard title="Total Leads" value={stats?.total || 0} icon={<Users className="text-[#084D8C]" size={22}/>} color="bg-blue-50" onClick={() => { setStatusFilter('All'); setSearch(''); }} />
+        <StatCard title="Assigned" value={stats?.assigned || 0} icon={<CheckCircle className="text-green-600" size={22}/>} color="bg-green-50" onClick={() => setStatusFilter('Qualified')} />
+        <StatCard title="Converted" value={stats?.converted || 0} icon={<Target className="text-purple-600" size={22}/>} color="bg-purple-50" onClick={() => setStatusFilter('Won')} />
+        <StatCard title="Followups" value={stats?.followups || 0} icon={<AlertCircle className="text-amber-600" size={22}/>} color="bg-amber-50" onClick={() => router.push('/follow-ups')} />
       </div>
 
       {/* Status Filter Tabs */}
@@ -532,9 +533,12 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string,
   )
 }
 
-function StatCard({ title, value, icon, color }: any) {
+function StatCard({ title, value, icon, color, onClick }: any) {
   return (
-    <div className={`p-6 rounded-2xl border border-gray-100 shadow-sm ${color} hover:shadow-md transition-all`}>
+    <div 
+      onClick={onClick}
+      className={`p-6 rounded-2xl border border-gray-100 shadow-sm ${color} hover:shadow-md transition-all select-none ${onClick ? 'cursor-pointer hover:border-gray-200 hover:scale-[1.01] active:scale-[0.99]' : ''}`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">{title}</p>

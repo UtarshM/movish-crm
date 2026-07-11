@@ -8,6 +8,7 @@ export default function HRPage() {
   const [employees, setEmployees] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'leave'>('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [roles, setRoles] = useState<any[]>([])
   const [newEmployee, setNewEmployee] = useState({
@@ -57,11 +58,19 @@ export default function HRPage() {
     }
   }
 
-  const filteredEmployees = employees.filter(emp => 
-    emp.fullName?.toLowerCase().includes(search.toLowerCase()) ||
-    emp.email?.toLowerCase().includes(search.toLowerCase()) ||
-    emp.role?.name?.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredEmployees = employees.filter(emp => {
+    const matchesSearch = emp.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      emp.email?.toLowerCase().includes(search.toLowerCase()) ||
+      emp.role?.name?.toLowerCase().includes(search.toLowerCase())
+
+    const matchesStatus = statusFilter === 'all' 
+      ? true 
+      : statusFilter === 'active' 
+      ? emp.isActive 
+      : !emp.isActive
+
+    return matchesSearch && matchesStatus
+  })
 
   return (
     <AdminLayout>
@@ -80,9 +89,9 @@ export default function HRPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-        <StatCard title="Total Staff" value={employees.length} icon={<Shield className="text-blue-600" />} color="bg-blue-50" />
-        <StatCard title="Active Now" value={employees.filter(e => e.isActive).length} icon={<UserCheck className="text-green-600" />} color="bg-green-50" />
-        <StatCard title="On Leave" value={0} icon={<UserMinus className="text-amber-600" />} color="bg-amber-50" />
+        <StatCard title="Total Staff" value={employees.length} icon={<Shield className="text-blue-600" />} color="bg-blue-50" onClick={() => { setStatusFilter('all'); setSearch(''); }} active={statusFilter === 'all'} />
+        <StatCard title="Active Now" value={employees.filter(e => e.isActive).length} icon={<UserCheck className="text-green-600" />} color="bg-green-50" onClick={() => setStatusFilter('active')} active={statusFilter === 'active'} />
+        <StatCard title="On Leave" value={employees.filter(e => !e.isActive).length} icon={<UserMinus className="text-amber-600" />} color="bg-amber-50" onClick={() => setStatusFilter('leave')} active={statusFilter === 'leave'} />
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mt-8">
@@ -207,9 +216,14 @@ export default function HRPage() {
   )
 }
 
-function StatCard({ title, value, icon, color }: any) {
+function StatCard({ title, value, icon, color, onClick, active }: any) {
   return (
-    <div className={`p-6 rounded-2xl border border-gray-100 shadow-sm ${color}`}>
+    <div 
+      onClick={onClick}
+      className={`p-6 rounded-2xl border transition-all select-none ${color} ${
+        onClick ? 'cursor-pointer hover:shadow-md hover:border-gray-200' : ''
+      } ${active ? 'ring-2 ring-blue-500 shadow-md border-blue-200' : 'border-gray-100 shadow-sm'}`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>
